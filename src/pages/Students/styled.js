@@ -13,6 +13,14 @@ export const StudentContainer = styled.div`
   div + div {
     border-top: 1px solid #eee;
   }
+
+  tr + tr {
+    border-top: 1px solid #eee;
+  }
+
+  table {
+    width: 100%;
+  }
 `;
 
 export const ProfilePicture = styled.div`

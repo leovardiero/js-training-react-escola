@@ -8,11 +8,13 @@ import { Container } from '../../styles/GlobalStyles';
 import { Form } from './styled';
 import axios from '../../services/axios';
 import history from '../../services/history';
+import Loading from '../../components/Loading';
 
 export default function Register() {
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -35,9 +37,10 @@ export default function Register() {
 
     if (formErrors) return;
 
+    setIsLoading(true);
     try {
       await axios.post('/user/', {
-        nome: name,
+        full_name: name,
         password,
         email,
       });
@@ -47,11 +50,15 @@ export default function Register() {
       // const status = get(err, 'response.status', 0);
       const errors = get(err, 'response.data.errors', []);
       errors.map((error) => toast.error(error));
+    } finally {
+      setIsLoading(false);
     }
   }
 
   return (
     <Container>
+      <Loading isLoading={isLoading} />
+
       <h1> Create New Account </h1>
       <Form onSubmit={handleSubmit}>
         <label htmlFor="name">

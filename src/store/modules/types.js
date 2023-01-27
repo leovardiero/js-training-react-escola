@@ -1,3 +1,12 @@
+// Examples
 export const CLICKED_BUTTON_SUCCESS = 'BUTTON_CLICKED_SUCCESS';
 export const CLICKED_BUTTON_REQUEST = 'BUTTON_CLICKED_REQUEST';
 export const CLICKED_BUTTON_FAILURE = 'BUTTON_CLICKED_FAILURE';
+
+// Auth types
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+
+// Persist
+export const PERSIST_REHYDRATE = 'persist/REHYDRATE';
