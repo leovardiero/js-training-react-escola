@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
@@ -28,7 +29,8 @@ export default function Students() {
     <Container>
       <Loading isLoading={isLoading} />
 
-      <h1> Students </h1>
+      <h1> Teste </h1>
+
       <StudentContainer>
         {students.map((student) => (
           <div key={String(student.id)}>

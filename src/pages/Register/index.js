@@ -18,6 +18,7 @@ export default function Register() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
     let formErrors = false;
 
     if (name.length < 3 || name.length > 255) {
@@ -91,7 +92,7 @@ export default function Register() {
           />
         </label>
 
-        <button type="submit"> Create Account </button>
+        <button type="submit"> Enviar </button>
       </Form>
     </Container>
   );
