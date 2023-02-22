@@ -2,19 +2,31 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { get } from 'lodash';
 import { Container } from '../../styles/GlobalStyles';
 import { Form } from './styled';
-import axios from '../../services/axios';
-import history from '../../services/history';
 import Loading from '../../components/Loading';
+import * as actions from '../../store/modules/auth/actions';
 
 export default function Register() {
+  const dispatch = useDispatch();
+
+  const id = useSelector((state) => state.auth.user.id);
+  const storedName = useSelector((state) => state.auth.user.name);
+  const storedEmail = useSelector((state) => state.auth.user.email);
+  const isLoading = useSelector((state) => state.auth.isLoading);
+
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [isLoading, setIsLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!id) return;
+
+    setName(storedName);
+    setEmail(storedEmail);
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -31,36 +43,21 @@ export default function Register() {
       toast.error('Invalid E-mail');
     }
 
-    if (password.length < 6 || password.length > 50) {
+    if (!id && (password.length < 6 || password.length > 50)) {
       formErrors = true;
       toast.error('Password must contain between 6 and 50 characters');
     }
 
     if (formErrors) return;
 
-    setIsLoading(true);
-    try {
-      await axios.post('/user/', {
-        full_name: name,
-        password,
-        email,
-      });
-      toast.success('Account created!');
-      history.push('/login');
-    } catch (err) {
-      // const status = get(err, 'response.status', 0);
-      const errors = get(err, 'response.data.errors', []);
-      errors.map((error) => toast.error(error));
-    } finally {
-      setIsLoading(false);
-    }
+    dispatch(actions.registerRequest({ name, email, password, id }));
   }
 
   return (
     <Container>
       <Loading isLoading={isLoading} />
 
-      <h1> Create New Account </h1>
+      <h1> {id ? 'Edit Your Account' : 'Create New Account'} </h1>
       <Form onSubmit={handleSubmit}>
         <label htmlFor="name">
           Name:
@@ -78,7 +75,7 @@ export default function Register() {
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your name"
+            placeholder="Enter your email"
           />
         </label>
 
@@ -92,7 +89,7 @@ export default function Register() {
           />
         </label>
 
-        <button type="submit"> Enviar </button>
+        <button type="submit"> {id ? 'Edit' : 'Create'} </button>
       </Form>
     </Container>
   );

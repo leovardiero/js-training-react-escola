@@ -10,6 +10,7 @@ const initialState = {
 // eslint-disable-next-line func-names
 export default function (state = initialState, action = undefined) {
   switch (action.type) {
+    //  LOGIN CASES
     case types.LOGIN_REQUEST: {
       const newState = { ...state };
       newState.isLoading = true;
@@ -26,6 +27,33 @@ export default function (state = initialState, action = undefined) {
       newState.isLoggedIn = true;
       newState.token = action.payload.token;
       newState.user = action.payload.user;
+      newState.isLoading = false;
+      return newState;
+    }
+
+    // REGISTER CASES
+    case types.REGISTER_REQUEST: {
+      const newState = { ...state };
+      newState.isLoading = true;
+      return newState;
+    }
+
+    case types.REGISTER_UPDATED_SUCCESS: {
+      const newState = { ...state };
+      newState.isLoading = false;
+      newState.user.name = action.payload.name;
+      newState.user.email = action.payload.email;
+      return newState;
+    }
+
+    case types.REGISTER_CREATED_SUCCESS: {
+      const newState = { ...state };
+      newState.isLoading = false;
+      return newState;
+    }
+
+    case types.REGISTER_FAILURE: {
+      const newState = { ...state };
       newState.isLoading = false;
       return newState;
     }

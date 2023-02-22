@@ -24,8 +24,4 @@ export const Form = styled.form`
       border: 1px solid ${colors.primaryColor};
     }
   }
-
-  .aws {
-    visibility: VISIBLE;
-  }
 `;
