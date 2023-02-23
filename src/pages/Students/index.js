@@ -2,7 +2,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
-import { FaUserCircle, FaEdit, FaWindowClose } from 'react-icons/fa';
+import {
+  FaUserCircle,
+  FaEdit,
+  FaWindowClose,
+  FaExclamation,
+} from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 import { Container } from '../../styles/GlobalStyles';
 import { StudentContainer, ProfilePicture } from './styled';
@@ -25,14 +31,43 @@ export default function Students() {
     getData();
   }, []);
 
+  const handleDeleteAsk = (e) => {
+    e.preventDefault();
+
+    const exclamationButton = e.currentTarget.nextSibling;
+    exclamationButton.setAttribute('display', 'block');
+    e.currentTarget.remove();
+  };
+
+  const handleDelete = async (e, id, index) => {
+    e.persist();
+    try {
+      setIsLoading(true);
+      await axios.delete(`/student/${id}`);
+      const newStudents = [...students];
+      newStudents.splice(index, 1);
+      setStudents(newStudents);
+      setIsLoading(false);
+    } catch (err) {
+      const status = get(err, 'response.status', 0);
+      if (status === 401) {
+        toast.error('Login required!');
+      } else {
+        toast.error('An error ocurred during delete');
+      }
+
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Container>
       <Loading isLoading={isLoading} />
 
-      <h1> Teste </h1>
+      <h1> Students </h1>
 
       <StudentContainer>
-        {students.map((student) => (
+        {students.map((student, index) => (
           <div key={String(student.id)}>
             <ProfilePicture>
               {get(student, 'Photos[0].url', '') ? (
@@ -50,9 +85,17 @@ export default function Students() {
             <Link to={`/student/${student.id}`}>
               <FaEdit size={16} />{' '}
             </Link>
-            <Link to={`/student/${student.id}`}>
-              <FaWindowClose size={16} />{' '}
+
+            <Link to={`/student/${student.id}`} onClick={handleDeleteAsk}>
+              <FaWindowClose size={16} />
             </Link>
+
+            <FaExclamation
+              size={16}
+              display="none"
+              cursor="pointer"
+              onClick={(e) => handleDelete(e, student.id, index)}
+            />
           </div>
         ))}
       </StudentContainer>
