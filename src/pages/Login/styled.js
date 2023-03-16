@@ -4,7 +4,7 @@ import * as colors from '../../config/colors';
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 20px;
 
   label {
     display: flex;
@@ -18,7 +18,7 @@ export const Form = styled.form`
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 0 10px;
-    margin-bottom: 15px;
+    margin-top: 5px;
 
     &:focus {
       border: 1px solid ${colors.primaryColor};

@@ -45,7 +45,7 @@ export default function Login(props) {
       <h1> Login </h1>
       <Form onSubmit={handleSubmit}>
         <label htmlFor="email">
-          Email:
+          E-mail:
           <input
             type="text"
             value={email}
